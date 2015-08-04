@@ -2,7 +2,7 @@
 
 namespace perf\Emailing;
 
-use \perf\String;
+use perf\String;
 
 /**
  * E-mail container.
@@ -30,14 +30,14 @@ class Email
      *
      * @var null|string
      */
-    private $from = null;
+    private $from;
 
     /**
      * "Reply-to" e-mail address.
      *
      * @var null|string
      */
-    private $replyTo = null;
+    private $replyTo;
 
     /**
      * "To" e-mail addresses.
@@ -231,7 +231,7 @@ class Email
     }
 
     /**
-     * Sets which charset should be used for the e-mail.
+     * Returns which charset should be used for the e-mail.
      *
      * @return string charset to be used.
      */
