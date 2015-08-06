@@ -2,8 +2,6 @@
 
 namespace perf\Emailing;
 
-use perf\String;
-
 /**
  * E-mail container.
  *
@@ -109,12 +107,10 @@ class Email
      */
     public function setFrom($emailAddress)
     {
-        if (is_null($emailAddress)) {
+        if (null === $emailAddress) {
             $this->from = null;
-        } elseif (String\Email::validate($emailAddress)) {
-            $this->from = (string) $emailAddress;
         } else {
-            throw new \InvalidArgumentException();
+            $this->from = (string) $emailAddress;
         }
 
         return $this;
@@ -129,12 +125,10 @@ class Email
      */
     public function setReplyTo($emailAddress)
     {
-        if (is_null($emailAddress)) {
+        if (null === $emailAddress) {
             $this->replyTo = $emailAddress;
-        } elseif (String\Email::validate($emailAddress)) {
-            $this->replyTo = (string) $emailAddress;
         } else {
-            throw new \InvalidArgumentException();
+            $this->replyTo = (string) $emailAddress;
         }
 
         return $this;
@@ -149,13 +143,9 @@ class Email
      */
     public function addTo($emailAddress)
     {
-        if (String\Email::validate($emailAddress)) {
-            $this->to[] = (string) $emailAddress;
+        $this->to[] = (string) $emailAddress;
 
-            return $this;
-        }
-
-        throw new \InvalidArgumentException();
+        return $this;
     }
 
     /**
@@ -167,13 +157,9 @@ class Email
      */
     public function addCc($emailAddress)
     {
-        if (String\Email::validate($emailAddress)) {
-            $this->cc[] = (string) $emailAddress;
+        $this->cc[] = (string) $emailAddress;
 
-            return $this;
-        }
-
-        throw new \InvalidArgumentException();
+        return $this;
     }
 
     /**
@@ -185,13 +171,9 @@ class Email
      */
     public function addBcc($emailAddress)
     {
-        if (String\Email::validate($emailAddress)) {
-            $this->bcc[] = (string) $emailAddress;
+        $this->bcc[] = (string) $emailAddress;
 
-            return $this;
-        }
-
-        throw new \InvalidArgumentException();
+        return $this;
     }
 
     /**
