@@ -73,12 +73,12 @@ class EmailSender
         $additionalHeaders = array();
 
         $from = $email->getFrom();
-        if (!is_null($from)) {
+        if (null !== $from) {
             $additionalHeaders[] = "From: {$from}";
         }
 
         $replyTo = $email->getReplyTo();
-        if (!is_null($replyTo)) {
+        if (null !== $replyTo) {
             $additionalHeaders[] = "Reply-To: {$replyTo}";
         }
 
