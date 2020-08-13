@@ -6,7 +6,11 @@ class EmailBuilder
 {
     private const CHARSET_DEFAULT = 'utf-8';
 
-    private bool $html = false;
+    private const CONTENT_TYPE_TEXT    = 'text/plain';
+    private const CONTENT_TYPE_HTML    = 'text/html';
+    private const CONTENT_TYPE_DEFAULT = self::CONTENT_TYPE_TEXT;
+
+    private string $contentType = self::CONTENT_TYPE_DEFAULT;
 
     private string $charset = self::CHARSET_DEFAULT;
 
@@ -33,9 +37,19 @@ class EmailBuilder
 
     private string $message = '';
 
-    public function setHtml(bool $html): self
+    public function setHtml(): self
     {
-        $this->html = (bool) $html;
+        return $this->setContentType(self::CONTENT_TYPE_HTML);
+    }
+
+    public function setPlainText(): self
+    {
+        return $this->setContentType(self::CONTENT_TYPE_TEXT);
+    }
+
+    public function setContentType(string $contentType): self
+    {
+        $this->contentType = $contentType;
 
         return $this;
     }
@@ -68,7 +82,7 @@ class EmailBuilder
         return $this;
     }
 
-    public function removeReplyTo(string $emailAddress, ?string $name = null): self
+    public function removeReplyTo(): self
     {
         $this->replyTo = null;
 
@@ -134,7 +148,7 @@ class EmailBuilder
     public function build(): EmailInterface
     {
         return new Email(
-            $this->html,
+            $this->contentType,
             $this->charset,
             $this->from,
             $this->replyTo,

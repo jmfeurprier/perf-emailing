@@ -4,7 +4,7 @@ namespace perf\Emailing;
 
 class Email implements EmailInterface
 {
-    private bool $html;
+    private string $contentType;
 
     private string $charset;
 
@@ -37,7 +37,7 @@ class Email implements EmailInterface
     }
 
     /**
-     * @param bool           $html
+     * @param string         $contentType
      * @param string         $charset
      * @param null|Recipient $from
      * @param null|Recipient $replyTo
@@ -48,7 +48,7 @@ class Email implements EmailInterface
      * @param string         $message
      */
     public function __construct(
-        bool $html,
+        string $contentType,
         string $charset,
         ?Recipient $from,
         ?Recipient $replyTo,
@@ -58,20 +58,20 @@ class Email implements EmailInterface
         string $subject,
         string $message
     ) {
-        $this->html    = $html;
-        $this->charset = $charset;
-        $this->from    = $from;
-        $this->replyTo = $replyTo;
-        $this->to      = $to;
-        $this->cc      = $cc;
-        $this->bcc     = $bcc;
-        $this->subject = $subject;
-        $this->message = $message;
+        $this->contentType = $contentType;
+        $this->charset     = $charset;
+        $this->from        = $from;
+        $this->replyTo     = $replyTo;
+        $this->to          = $to;
+        $this->cc          = $cc;
+        $this->bcc         = $bcc;
+        $this->subject     = $subject;
+        $this->message     = $message;
     }
 
-    public function isHtml(): bool
+    public function getContentType(): string
     {
-        return $this->html;
+        return $this->contentType;
     }
 
     /**

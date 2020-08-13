@@ -51,10 +51,10 @@ class EmailBuilderTest extends TestCase
         $this->assertSame($fromName, $email->getFrom()->getName());
     }
 
-    public function testGetFromModifiedToNull()
+    public function testGetFromModifiedThenRemoved()
     {
         $this->emailBuilder->setFrom('foo@bar.baz');
-        $this->emailBuilder->setFrom(null);
+        $this->emailBuilder->removeFrom();
 
         $email = $this->emailBuilder->build();
 
@@ -81,10 +81,10 @@ class EmailBuilderTest extends TestCase
         $this->assertSame($replyToName, $email->getReplyTo()->getName());
     }
 
-    public function testGetReplyToModifiedToNull()
+    public function testGetReplyToModifiedThenRemoved()
     {
         $this->emailBuilder->setReplyTo('foo@bar.baz');
-        $this->emailBuilder->setReplyTo(null);
+        $this->emailBuilder->removeReplyTo();
 
         $email = $this->emailBuilder->build();
 

@@ -4,7 +4,7 @@ namespace perf\Emailing;
 
 interface EmailInterface
 {
-    public function isHtml(): bool;
+    public function getContentType(): string;
 
     /**
      * Returns which charset should be used for the e-mail.

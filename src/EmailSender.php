@@ -15,6 +15,11 @@ class EmailSender implements EmailSenderInterface
 
     private EmailInterface $email;
 
+    /**
+     * @var string[]
+     */
+    private array $additionalHeaders = [];
+
     public function __construct(MailFunctionWrapperInterface $mailFunctionWrapper = null)
     {
         if (null === $mailFunctionWrapper) {
@@ -45,7 +50,8 @@ class EmailSender implements EmailSenderInterface
 
     private function init(EmailInterface $email): void
     {
-        $this->email = $email;
+        $this->email             = $email;
+        $this->additionalHeaders = [];
     }
 
     private function getTo(): string
@@ -65,40 +71,60 @@ class EmailSender implements EmailSenderInterface
 
     private function getAdditionalHeaders(): string
     {
-        $additionalHeaders = [];
+        $this->processFrom();
+        $this->processReplyTo();
+        $this->processCc();
+        $this->processBcc();
+        $this->processContentType();
 
+        return join(self::HEADER_END_OF_LINE_STRING, $this->additionalHeaders);
+    }
+
+    private function processFrom(): void
+    {
         $from = $this->email->getFrom();
+
         if (null !== $from) {
-            $additionalHeaders[] = "From: {$from}";
+            $this->additionalHeaders[] = "From: {$from}";
         }
+    }
 
+    private function processReplyTo(): void
+    {
         $replyTo = $this->email->getReplyTo();
+
         if (null !== $replyTo) {
-            $additionalHeaders[] = "Reply-To: {$replyTo}";
+            $this->additionalHeaders[] = "Reply-To: {$replyTo}";
         }
+    }
 
+    private function processCc(): void
+    {
         $cc = $this->email->getCc();
+
         if (count($cc) > 0) {
-            $recipients          = $this->buildRecipientsString($cc);
-            $additionalHeaders[] = "Cc: {$recipients}";
+            $recipients                = $this->buildRecipientsString($cc);
+            $this->additionalHeaders[] = "Cc: {$recipients}";
         }
+    }
 
+    private function processBcc(): void
+    {
         $bcc = $this->email->getBcc();
+
         if (count($bcc) > 0) {
-            $recipients          = $this->buildRecipientsString($bcc);
-            $additionalHeaders[] = "Bcc: {$recipients}";
+            $recipients                = $this->buildRecipientsString($bcc);
+            $this->additionalHeaders[] = "Bcc: {$recipients}";
         }
+    }
 
-        $additionalHeaders[] = 'MIME-Version: 1.0';
+    private function processContentType(): void
+    {
+        $contentType = $this->email->getContentType();
+        $charset     = $this->email->getCharset();
 
-        $contentType = 'text/plain';
-        if ($this->email->isHtml()) {
-            $contentType = 'text/html';
-        }
-
-        $additionalHeaders[] = "Content-Type: {$contentType}; charset=\"{$this->email->getCharset()}\"";
-
-        return join(self::HEADER_END_OF_LINE_STRING, $additionalHeaders);
+        $this->additionalHeaders[] = 'MIME-Version: 1.0';
+        $this->additionalHeaders[] = "Content-Type: {$contentType}; charset=\"{$charset}\"";
     }
 
     /**
