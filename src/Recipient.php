@@ -30,6 +30,6 @@ class Recipient
             return $this->getAddress();
         }
 
-        return "{$this->address} <{$this->name}>";
+        return "{$this->name} <{$this->address}>";
     }
 }
