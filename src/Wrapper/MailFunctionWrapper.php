@@ -11,6 +11,6 @@ class MailFunctionWrapper implements MailFunctionWrapperInterface
         $additionalHeaders = null,
         $additionalParameters = null
     ): bool {
-        return mail($to, $subject, $message, $$additionalHeaders, $additionalParameters);
+        return mail($to, $subject, $message, $additionalHeaders, $additionalParameters);
     }
 }
