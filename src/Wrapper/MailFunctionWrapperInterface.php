@@ -8,7 +8,7 @@ interface MailFunctionWrapperInterface
         string $to,
         string $subject,
         string $message,
-        $additionalHeaders = null,
-        $additionalParameters = null
+        array|string $additionalHeaders = [],
+        string $additionalParameters = ''
     ): bool;
 }
